@@ -472,7 +472,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="270" />
     <option name="y" value="55" />
     <option name="width" value="3369" />
@@ -549,7 +549,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../told" />
+    <property name="last_opened_file_path" value="D:/told" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -686,7 +686,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="270" y="55" width="3369" height="1880" extended-state="1" />
+    <frame x="270" y="55" width="3369" height="1880" extended-state="0" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
