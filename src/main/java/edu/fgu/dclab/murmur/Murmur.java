@@ -1,22 +1,22 @@
 package edu.fgu.dclab.murmur;
 
 import javafx.application.Application;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class Murmur extends Application {
 
     private SceneChat sceneChat;
     private SceneConnect sceneConnect;
-    private Net netHandler = new Net();
+    private Stage stage;
+    private Net netIO = new Net();
 
     @Override
     public void start(Stage stage) throws Exception {
+        this.stage = stage;
+
         stage.setTitle("MurMur 聊天室");
 
         sceneChat = new SceneChat();
-
         sceneConnect = new SceneConnect(this);
 
         stage.setScene(sceneConnect.getScene());
@@ -24,25 +24,13 @@ public class Murmur extends Application {
         stage.show();
     } // start()
 
-    public void connect(Stage stage, String ip, int port) {
-        if (netHandler.connect(ip, port)) {
-            setChattingBoard(sceneChat.getBoard(), netHandler.getReader());
-            setInputField(sceneChat.getInputField(), netHandler.getWriter());
+    public void connect(String ip, int port) {
+        if (netIO.connect(ip, port)) {
+            netIO.connectSink(sceneChat);
+            netIO.connectSource(sceneChat);
 
-            stage.setScene(sceneChat.getScene());
+            this.stage.setScene(sceneChat.getScene());
         }
-    }
-
-    private void setChattingBoard(TextArea textArea, NetReader reader) {
-        reader.setTextArea(textArea);
-
-        new Thread(reader).start();
-    }
-
-    private void setInputField(TextField textField, NetWriter writer) {
-        writer.setTextField(textField);
-
-        sceneChat.setWriter(writer);
     }
 
     public static void main(String[] args) {

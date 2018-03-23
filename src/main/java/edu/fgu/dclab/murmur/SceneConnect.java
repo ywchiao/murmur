@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class SceneConnect {
     private Scene mScene = null;
@@ -52,7 +51,6 @@ public class SceneConnect {
             @Override
             public void handle(ActionEvent e) {
                 app.connect(
-                    (Stage)mScene.getWindow(),
                     ipField.getText(),
                     Integer.parseInt(portField.getText())
                 );

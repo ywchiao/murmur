@@ -7,13 +7,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class SceneChat {
+public class SceneChat implements MessageSink, MessageSource {
     private Scene mScene = null;
 
     private TextArea textArea = null;
     private TextField textField = null;
 
-    private NetWriter writer = null;
+    private MessageSink sink = null;
 
     public SceneChat() {
         BorderPane contentPane = new BorderPane();
@@ -29,16 +29,19 @@ public class SceneChat {
         return mScene;
     }
 
-    public TextArea getBoard() {
-        return this.textArea;
+    public void connectSink(MessageSink sink) {
+        this.sink = sink;
     }
 
-    public TextField getInputField() {
-        return this.textField;
+    public String readMessage() {
+        String message = this.textField.getText();
+        this.textField.clear();
+
+        return message;
     }
 
-    public void setWriter(NetWriter writer) {
-        this.writer = writer;
+    public void writeMessage(String message) {
+        this.textArea.appendText(message + "\n");
     }
 
     private ScrollPane getMessagePane() {
@@ -65,7 +68,7 @@ public class SceneChat {
         btnSend.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent e) {
-                writer.sendMessage();
+                sink.writeMessage(readMessage());
             }
         });
 

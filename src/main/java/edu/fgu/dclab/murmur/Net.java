@@ -4,46 +4,43 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class Net {
-    private boolean connected = false;
-
     private Socket clientSocket;
 
-    private NetReader reader = null;
-    private NetWriter writer = null;
-
     public boolean connect(String ip, int port) {
-        connected = false;
-
         try {
             this.clientSocket = new Socket(ip, port);
-
-            this.writer = new NetWriter(
-                clientSocket.getOutputStream()
-            );
-
-            this.reader = new NetReader(
-                clientSocket.getInputStream()
-            );
-
-            System.out.println("ready");
-            connected = true;
         }
         catch (IOException e) {
             System.out.println("Connection refused.");
         }
 
-        return connected;
+        return isConnected();
     }
 
-    public NetReader getReader() {
-        return this.reader;
+    public void connectSink(MessageSink sink) {
+        try {
+            new Thread(new NetReader(
+                this.clientSocket.getInputStream(),
+                sink
+            )).start();
+        }
+        catch (IOException e) {
+            System.out.println("connectSink failed.");
+        }
     }
 
-    public NetWriter getWriter() {
-        return this.writer;
+    public void connectSource(MessageSource source) {
+        try {
+            source.connectSink(new NetWriter(
+                this.clientSocket.getOutputStream()
+            ));
+        }
+        catch (IOException e) {
+            System.out.println("connectSource failed.");
+        }
     }
 
     public boolean isConnected() {
-        return connected;
+        return !((this.clientSocket == null) || (this.clientSocket.isClosed()));
     }
 }

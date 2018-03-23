@@ -1,7 +1,5 @@
 package edu.fgu.dclab.murmur;
 
-import javafx.scene.control.TextArea;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,16 +7,14 @@ import java.io.InputStreamReader;
 
 public class NetReader implements Runnable {
     private BufferedReader in;
-    private TextArea textArea;
+    private MessageSink out;
 
-    public NetReader(InputStream in) {
+    public NetReader(InputStream in, MessageSink out) {
         this.in = new BufferedReader(
             new InputStreamReader(in)
         );
-    }
 
-    public void setTextArea(TextArea textArea) {
-        this.textArea = textArea;
+        this.out = out;
     }
 
     @Override
@@ -27,7 +23,7 @@ public class NetReader implements Runnable {
 
         try {
             while ((line = this.in.readLine()) != null) {
-                this.textArea.appendText(line + "\n");
+                this.out.writeMessage(line);
             }
         }
         catch (IOException e) {
