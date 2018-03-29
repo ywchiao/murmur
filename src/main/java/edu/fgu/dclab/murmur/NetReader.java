@@ -27,7 +27,7 @@ public class NetReader implements Runnable {
             }
         }
         catch (IOException e) {
-            System.out.println("NetReader I/O Exception");
+            System.out.println("NetReader I/O Exc eption");
         }
     }
 }
