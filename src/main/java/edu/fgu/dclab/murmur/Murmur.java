@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Murmur extends Application {
-
+    private Guest guest;
     private SceneChat sceneChat;
     private SceneConnect sceneConnect;
     private Stage stage;
@@ -19,6 +19,8 @@ public class Murmur extends Application {
         sceneChat = new SceneChat();
         sceneConnect = new SceneConnect(this);
 
+        guest = new Guest(sceneChat);
+
         stage.setScene(sceneConnect.getScene());
 
         stage.show();
@@ -26,8 +28,8 @@ public class Murmur extends Application {
 
     public void connect(String ip, int port) {
         if (netIO.connect(ip, port)) {
-            netIO.connectSink(sceneChat);
-            netIO.connectSource(sceneChat);
+            netIO.connectSink(guest);
+            netIO.connectSource(guest);
 
             this.stage.setScene(sceneChat.getScene());
         }

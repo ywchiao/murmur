@@ -1,7 +1,9 @@
 package edu.fgu.dclab.murmur;
 
+import edu.fgu.dclab.Message;
+
 public interface MessageSource {
-    String readMessage();
+    Message readMessage();
 
     void connectSink(MessageSink sink);
 }

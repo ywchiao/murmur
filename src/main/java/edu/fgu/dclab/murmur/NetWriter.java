@@ -1,16 +1,30 @@
 package edu.fgu.dclab.murmur;
 
+import edu.fgu.dclab.Message;
+
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 public class NetWriter implements MessageSink {
-    private PrintWriter out;
+    private ObjectOutputStream out;
 
     public NetWriter(OutputStream out) {
-        this.out = new PrintWriter(out, true);
+        try {
+            this.out = new ObjectOutputStream(out);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void writeMessage(String message) {
-        this.out.println(message);
+    public void writeMessage(Message message) {
+        try {
+            this.out.writeObject(message);
+            this.out.flush();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

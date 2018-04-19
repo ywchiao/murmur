@@ -1,5 +1,6 @@
 package edu.fgu.dclab.murmur;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -7,13 +8,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-public class SceneChat implements MessageSink, MessageSource {
+import java.text.MessageFormat;
+
+public class SceneChat {
     private Scene mScene = null;
 
+    private Label labelRoom = null;
+    private Label labelGuest = null;
     private TextArea textArea = null;
     private TextField textField = null;
 
-    private MessageSink sink = null;
+    private Button btnSend = null;
 
     public SceneChat() {
         BorderPane contentPane = new BorderPane();
@@ -29,10 +34,6 @@ public class SceneChat implements MessageSink, MessageSource {
         return mScene;
     }
 
-    public void connectSink(MessageSink sink) {
-        this.sink = sink;
-    }
-
     public String readMessage() {
         String message = this.textField.getText();
         this.textField.clear();
@@ -42,6 +43,32 @@ public class SceneChat implements MessageSink, MessageSource {
 
     public void writeMessage(String message) {
         this.textArea.appendText(message + "\n");
+    }
+
+    public void setOnButtonSend(EventHandler<ActionEvent> handler) {
+        btnSend.setOnAction(handler);
+    }
+
+    public void updateStatusBar(int numberOfGuests, int roomNumber) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                labelRoom.setText(MessageFormat.format(
+                    "房間號碼：{0}",
+                    roomNumber
+                ));
+            }
+        });
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                labelGuest.setText(MessageFormat.format(
+                    "目前人數：{0}",
+                    numberOfGuests
+                ));
+            }
+        });
     }
 
     private ScrollPane getMessagePane() {
@@ -61,16 +88,9 @@ public class SceneChat implements MessageSink, MessageSource {
     } // getMessagePane()
 
     private BorderPane getInputPane() {
-        Button btnSend = new Button("送 出");
+        btnSend = new Button("送 出");
 
         this.textField = new TextField();
-
-        btnSend.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                sink.writeMessage(readMessage());
-            }
-        });
 
         BorderPane inputPane = new BorderPane();
 
@@ -81,9 +101,11 @@ public class SceneChat implements MessageSink, MessageSource {
     } // getInputPane()
 
     private HBox getStatusBar() {
-        Label id = new Label("房間號碼：");
-        Label number = new Label("目前人數：");
+        labelRoom = new Label("房間號碼： 0");
+        labelGuest = new Label("目前人數： 0");
 
-        return new HBox(id, number);
+        return new HBox(labelRoom, labelGuest);
     } // getStatusBar()
 }
+
+// SceneChat.java
