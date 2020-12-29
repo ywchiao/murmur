@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.MessageFormat;
 
@@ -100,6 +102,8 @@ public class SceneChat {
         return inputPane;
     } // getInputPane()
 
+    @NotNull
+    @Contract(" -> new")
     private HBox getStatusBar() {
         labelRoom = new Label("房間號碼： 0");
         labelGuest = new Label("目前人數： 0");
